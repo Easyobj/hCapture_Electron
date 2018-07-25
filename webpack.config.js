@@ -24,8 +24,11 @@ module.exports = {
     ]
   },
   entry: {
-    "main/index": "./src/main/index.js"
-    // "renderer/app": "./src/renderer/app.jsx"
+    "main/index": "./src/main/index.js",
+    "renderer/app": "./src/renderer/app.jsx",
+    "renderer/captureWindow": "./src/renderer/captureWindow.js",
+    "renderer/pincodeWindow": "./src/renderer/pincodeWindow.jsx",
+    "renderer/previewWindow": "./src/renderer/previewWindow.jsx"
   },
   output: {
     path: path.resolve(__dirname, "dist"),

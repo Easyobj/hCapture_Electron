@@ -1,17 +1,56 @@
-const Electron = require("electron");
-const { app, BrowserWindow } = Electron;
+import { app, shell } from "electron";
+import createFileManager from "./createFileManager";
+import trimDesktop from "./trimDesktop";
+import createCaptureWindow from "./createCaptureWindow";
+import createPreviewWindow from "./createPreviewWindow";
+
+let captureWindow;
+
+function captureAndOpenItem() {
+  const fileManager = createFileManager();
+  return trimDesktop()
+    .then(captureWindow.capture.bind(captureWindow))
+    .then(image => {
+      const createdFilename = fileManager.writeImage(
+        app.getPath("temp"),
+        image
+      );
+      return createdFilename;
+    })
+    .then(shell.openItem.bind(shell))
+    .then(() => {
+      if (process.platform !== "darwin") {
+        app.quit();
+      }
+    });
+}
+
+function captureAndPost() {
+  const fileManager = createFileManager();
+  return trimDesktop()
+    .then(captureWindow.capture.bind(captureWindow))
+    .then(image => {
+      const createdFilename = fileManager.writeImage(
+        app.getPath("temp"),
+        image
+      );
+      return createdFilename;
+    })
+    .then(filename => {
+      console.log(filename);
+      const win = createPreviewWindow({ filename });
+      win.once("DONE_TWEET", ({ url }) => {
+        shell.openExternal(url);
+        win.close();
+        if (process.platform !== "darwin") {
+          app.quit();
+        }
+      });
+    });
+}
 
 app.on("ready", () => {
-  const display = Electron.screen.getAllDisplays()[0];
-  const { x, y, width, height } = display.bounds;
-  const win = new BrowserWindow({
-    fraome: false,
-    transparent: true,
-    alwaysOnTop: true,
-    x,
-    y,
-    width,
-    height
-  });
-  console.log(display);
+  captureWindow = createCaptureWindow();
+  // captureAndOpenItem();
+  captureAndPost();
 });

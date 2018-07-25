@@ -2,28 +2,34 @@
   "name": "hCapture_Electron",
   "version": "1.0.0",
   "description": "HoYa's screen capture application with electron",
-  "main": "src/main/index.js",
+  "main": "dist/main/index.js",
   "repository": "https://github.com/llHoYall/hCapture_Electron",
   "author": "llHoYall <hoya128@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "build": "webpack --watch"
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "test1": "babel-node test/main/twitterClient.verifyCredentials.test.js",
+    "test2": "electron test/main/twitterLoginManager.getAccessToken.test.js"
+  },
+  "dependencies": {
+    "oauth": "^0.9.15",
+    "photon": "connors/photon",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
     "css-loader": "^1.0.0",
     "electron": "^2.0.5",
     "style-loader": "^0.21.0",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.0.8"
-  },
-  "dependencies": {
-    "photon": "connors/photon",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1"
   }
 }
